@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.dao.UserDao">
+
+    <select id="login" resultType="com.example.entity.User">
+        select status,username from user
+        where status=#{status} and username=#{username} and password=#{password}
+    </select>
+
+    <select id="myxx" resultType="com.example.entity.User">
+        select * from user where status=#{status} and username=#{username}
+    </select>
+
+    <update id="uppsd">
+        update user set password=#{password} where username=#{username}
+    </update>
+
+    <update id="update">
+        update user
+        <set>
+            <if  test="status != null || status != ''">
+                status=#{status},
+            </if>
+            <if  test="username != null || username != ''">
+                username=#{username},
+            </if>
+            <if  test="name != null || name != ''">
+                name=#{name},
+            </if>
+            <if  test="sex != null || sex != ''">
+                sex=#{sex},
+            </if>
+            <if  test="age != null || age != ''">
+                age=#{age},
+            </if>
+            <if  test="phone != null || phone != ''">
+                phone=#{phone},
+            </if>
+            <if  test="address != null || address != ''">
+                address=#{address}
+            </if>
+        </set>
+        where id=#{id}
+    </update>
+
+    <select id="mypsd" resultType="java.lang.String">
+        select password from user where username=#{username}
+    </select>
+
+
+</mapper>

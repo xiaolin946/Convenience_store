@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.dao.AccessoryDao">
+
+    <insert id="insert">
+        insert into
+        accessory(id,type,name,skin,quality,img,paint_seed,paint_index,appearance,abrasion,attribute_description,price,status)
+        value(#{id},#{type},#{name},#{skin},#{quality},#{img},#{paint_seed},#{paint_index},#{appearance},#{abrasion},#{attribute_description},#{price},#{status})
+    </insert>
+
+    <update id="update">
+        update accessory
+        <set>
+            <if  test="type != null || type != ''">
+                type=#{type},
+            </if>
+            <if  test="name != null || name != ''">
+                name=#{name},
+            </if>
+            <if  test="skin != null || skin != ''">
+                skin=#{skin},
+            </if>
+            <if  test="quality != null || quality != ''">
+                quality=#{quality},
+            </if>
+            <if  test="img != null || img != ''">
+                img=#{img},
+            </if>
+            <if  test="paint_seed != null || paint_seed != ''">
+                paint_seed=#{paint_seed},
+            </if>
+            <if  test="paint_index != null || paint_index != ''">
+                paint_index=#{paint_index},
+            </if>
+            <if  test="appearance != null || appearance != ''">
+                appearance=#{appearance},
+            </if>
+            <if  test="abrasion != null || abrasion != ''">
+                abrasion=#{abrasion},
+            </if>
+            <if  test="attribute_description != null || attribute_description != ''">
+                attribute_description=#{attribute_description},
+            </if>
+            <if  test="status != null || status != ''">
+                status=#{status}
+            </if>
+        </set>
+        where id=#{id}
+    </update>
+
+    <delete id="delete">
+        delete from accessory where id=#{id}
+    </delete>
+
+    <select id="find_Aac" resultType="com.example.entity.Accessory">
+        select * from accessory
+    </select>
+
+    <select id="findPage_Aac_c" resultType="java.lang.Integer">
+        select count(*) from accessory
+    </select>
+
+    <select id="findPage_Aac" resultType="com.example.entity.Accessory">
+        select * from accessory limit #{pageNum},#{pageSize}
+    </select>
+
+    <select id="cfindPage_Aac_c" resultType="java.lang.Integer">
+        select count(*) from accessory
+        where type like #{type} and name like #{name} and skin like concat("%",#{skin},"%")
+    </select>
+
+    <select id="cfindPage_Aac" resultType="com.example.entity.Accessory">
+        select * from accessory
+        where type like #{type} and name like #{name} and skin like concat("%",#{skin},"%")
+        limit #{pageNum},#{pageSize}
+    </select>
+
+</mapper>

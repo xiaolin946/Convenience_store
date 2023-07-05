@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.dao.TypeDao">
+
+    <select id="find_ftype" resultType="com.example.entity.Type">
+        select l_type.id,l_type.f_type,l_type.s_type,l_type.n_type
+        from (select type.id,type.f_type,type.s_type,(a_type.n_type+type.n_type) as n_type
+              from type,(select type,count(*) as n_type from accessory group by type) as a_type
+              where type.f_type = a_type.type
+              UNION
+              SELECT id,f_type,s_type,n_type
+              from type
+              where f_type not in (select type from accessory group by type)
+              order by id asc) as l_type
+    </select>
+
+    <select id="find_ftype_c" resultType="java.lang.Integer">
+        select count(*)
+        from (
+            select type.id,type.f_type,type.s_type,(a_type.n_type+type.n_type) as n_type
+            from type,(select type,count(*) as n_type from accessory group by type) as a_type
+            where type.f_type = a_type.type
+            UNION
+            SELECT id,f_type,s_type,n_type
+            from type
+            where f_type not in (select type from accessory group by type)
+            order by id asc
+            ) as l_type
+    </select>
+
+    <select id="findPage_ftype" resultType="com.example.entity.Type">
+        select l_type.id,l_type.f_type,l_type.s_type,l_type.n_type
+        from (
+            select type.id,type.f_type,type.s_type,(a_type.n_type+type.n_type) as n_type
+            from type,(select type,count(*) as n_type from accessory group by type) as a_type
+            where type.f_type = a_type.type
+            UNION
+            SELECT id,f_type,s_type,n_type
+            from type
+            where f_type not in (select type from accessory group by type)
+            order by id asc
+            ) as l_type
+        limit #{pageNum},#{pageSize}
+    </select>
+
+    <select id="cfind_ftype_c" resultType="java.lang.Integer">
+        select count(*)
+        from (
+                 select type.id,type.f_type,type.s_type,(a_type.n_type+type.n_type) as n_type
+                 from type,(select type,count(*) as n_type from accessory group by type) as a_type
+                 where type.f_type = a_type.type
+                 UNION
+                 SELECT id,f_type,s_type,n_type
+                 from type
+                 where f_type not in (select type from accessory group by type)
+                 order by id asc
+             ) as l_type
+        where l_type.f_type like #{f_type} and l_type.s_type like CONCAT('%',#{s_type},'%') and l_type.n_type like #{n_type}
+    </select>
+
+    <select id="cfindPage_ftype" resultType="com.example.entity.Type">
+        select l_type.id,l_type.f_type,l_type.s_type,l_type.n_type
+        from (
+            select type.id,type.f_type,type.s_type,(a_type.n_type+type.n_type) as n_type
+            from type,(select type,count(*) as n_type from accessory group by type) as a_type
+            where type.f_type = a_type.type
+            UNION
+            SELECT id,f_type,s_type,n_type
+            from type
+            where f_type not in (select type from accessory group by type)
+            order by id asc
+            ) as l_type
+        where l_type.f_type like #{f_type} and l_type.s_type like CONCAT('%',#{s_type},'%') and l_type.n_type like #{n_type}
+        limit #{pageNum},#{pageSize}
+    </select>
+
+    <insert id="insert">
+        insert into type(f_type,s_type,n_type) value(#{f_type},#{s_type},#{n_type})
+    </insert>
+
+    <delete id="delete">
+        delete from type where id=#{id}
+    </delete>
+
+    <update id="update">
+        update type set s_type = #{s_type} where f_type = #{f_type}
+    </update>
+
+</mapper>

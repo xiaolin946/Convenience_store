@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.dao.OrderDao">
+
+    <select id="findPage_Forder_c" resultType="java.lang.Integer">
+        select count(*) from ac_order where acid like concat("%",#{acid},"%") and guser like concat("%",#{guser},"%") and status = -1
+    </select>
+
+    <select id="findPage_Forder" resultType="com.example.entity.Order">
+        select * from ac_order where acid like concat("%",#{acid},"%") and guser like concat("%",#{guser},"%") and status = -1
+        limit #{pageNum},#{pageSize}
+    </select>
+
+    <select id="findPage_Torder_c" resultType="java.lang.Integer">
+        select count(*) from ac_order where acid like concat("%",#{acid},"%") and guser like concat("%",#{guser},"%") and status = 0
+    </select>
+
+    <select id="findPage_Torder" resultType="com.example.entity.Order">
+        select * from ac_order where acid like concat("%",#{acid},"%") and guser like concat("%",#{guser},"%") and status = 0
+        limit #{pageNum},#{pageSize}
+    </select>
+
+    <select id="findPage_Oorder_c" resultType="java.lang.Integer">
+        select count(*) from ac_order where acid like concat("%",#{acid},"%") and guser like concat("%",#{guser},"%") and status = 1
+    </select>
+
+    <select id="findPage_Oorder" resultType="com.example.entity.Order">
+        select * from ac_order where acid like concat("%",#{acid},"%") and guser like concat("%",#{guser},"%") and status = 1
+            limit #{pageNum},#{pageSize}
+    </select>
+
+</mapper>
